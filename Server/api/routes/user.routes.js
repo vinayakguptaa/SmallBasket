@@ -88,6 +88,7 @@ router.post("/login", async (req, res) => {
             );
             return res.status(200).json({
               token,
+              isAdmin: user.isAdmin,
             });
           }
           return res.status(401).json({
@@ -106,3 +107,5 @@ router.post("/login", async (req, res) => {
       });
     });
 });
+
+module.exports = router;

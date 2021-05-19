@@ -1,0 +1,15 @@
+{
+  "short_name": "Small Basket",
+  "name": "An E-Commerce platform with Review System Implementation",
+  "icons": [
+    {
+      "src": "logo.svg",
+      "sizes": "any",
+      "type": "icon/hd_hi.svg"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}

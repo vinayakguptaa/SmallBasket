@@ -5,10 +5,7 @@ const app = express();
 const cors = require("cors");
 require("dotenv").config();
 
-// const productRoutes = require("./api/controllers/product")
-// const adminRoutes = require("./api/controllers/admin")
-// const cartRoutes = require("./api/controllers/cart")
-// const customerRoutes = require("./api/controllers/customer")
+const userRoutes = require("./api/routes/user.routes");
 
 mongoose
   .connect(process.env.MONGO_URL, {
@@ -38,10 +35,7 @@ app.use((req, res, next) => {
 });
 
 app.use(cors());
-// app.use("/customer", customerRoutes);
-// app.use("/products", productRoutes);
-// app.use("/admin", adminRoutes)
-// app.use("/cart", cartRoutes)
+app.use("/user", userRoutes);
 
 app.use((req, res, next) => {
   console.log(req.url);
@@ -50,7 +44,7 @@ app.use((req, res, next) => {
   next(error);
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT;
 
 //Start the server
 app.listen(PORT, () => {
