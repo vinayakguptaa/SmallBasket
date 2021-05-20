@@ -4,6 +4,7 @@ const User = require("../models/user");
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const checkUser = require("../middleware/checkUser");
 
 router.post("/register", async (req, res) => {
   const { name, email, password, address } = req.body;
@@ -100,6 +101,23 @@ router.post("/login", async (req, res) => {
             error: e.toString(),
           });
         });
+    })
+    .catch((e) => {
+      res.status(400).json({
+        error: e.toString(),
+      });
+    });
+});
+
+router.get("/getProfile", checkUser, async (req, res) => {
+  await User.findOne({ _id: req.user.userId })
+    .then(async (user) => {
+      if (!user) {
+        return res.status(400).json({
+          message: "User not found",
+        });
+      }
+      return res.status(200).json(user);
     })
     .catch((e) => {
       res.status(400).json({
