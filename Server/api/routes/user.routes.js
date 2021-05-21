@@ -117,7 +117,8 @@ router.get("/getProfile", checkUser, async (req, res) => {
           message: "User not found",
         });
       }
-      return res.status(200).json(user);
+      const { name, email, isAdmin, address } = user;
+      return res.status(200).json({ name, email, isAdmin, address });
     })
     .catch((e) => {
       res.status(400).json({

@@ -1,4 +1,5 @@
 import React, { createContext, useEffect, useReducer } from "react";
+import { getProfile } from "../api/user";
 
 export const UserContext = createContext();
 
@@ -6,7 +7,9 @@ const initialState = {
   isLoggedIn: false,
   token: "",
   isAdmin: false,
-  //   studentProfile: {},
+  name: "",
+  email: "",
+  address: "",
 };
 
 const UserContextProvider = ({ children }) => {
@@ -20,17 +23,19 @@ const UserContextProvider = ({ children }) => {
     } else {
       setLoginFalse();
     }
+    console.log({ user: state });
+    //eslint-disable-next-line
   }, []);
 
   const setLoginTrue = async (token) => {
-    // const profile = await fetchStudentProfile(token);
-    // if (profile) {
-    dispatch({ type: "SET_LOGIN_TRUE", payload: token });
-    //   setProfile(profile);
-    localStorage.setItem("token", token);
-    // } else {
-    //   localStorage.clear();
-    // }
+    const profile = await getProfile(token);
+    if (profile) {
+      dispatch({ type: "SET_LOGIN_TRUE", payload: token });
+      setProfile(profile);
+      localStorage.setItem("token", token);
+    } else {
+      localStorage.clear();
+    }
   };
 
   const setLoginFalse = () => {
@@ -51,7 +56,7 @@ const UserContextProvider = ({ children }) => {
     setLoginTrue,
     setLoginFalse,
     setProfile,
-    setAdminTrue
+    setAdminTrue,
   };
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
@@ -76,7 +81,7 @@ const userReducer = (state, action) => {
     case "SET_STUDENT_PROFILE":
       return {
         ...state,
-        studentProfile: action.payload,
+        ...action.payload,
       };
     case "SET_ADMIN_TRUE":
       return {

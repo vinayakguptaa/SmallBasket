@@ -1,13 +1,15 @@
 import { Button } from "@chakra-ui/button";
 import { Box, Flex, Heading, HStack, Link } from "@chakra-ui/layout";
 import React, { useContext } from "react";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useHistory } from "react-router-dom";
 import logo from "../assets/logo.svg";
 import { UserContext } from "../context/UserContext";
 import { ColorModeSwitcher } from "./ColorModeSwitcher";
 
 function LandingNav(props) {
   const { isLoggedIn, setLoginFalse } = useContext(UserContext);
+
+  const history = useHistory();
 
   return (
     <Flex
@@ -45,22 +47,30 @@ function LandingNav(props) {
           </>
         ) : (
           <>
-            <Link to="/signup" as={RouterLink}>
-              <Button>
-                <span className="gradient-text">Create Account</span>
-              </Button>
-            </Link>
+            {history.location.pathname === "/signup" ? (
+              <></>
+            ) : (
+              <Link to="/signup" as={RouterLink}>
+                <Button>
+                  <span className="gradient-text">Create Account</span>
+                </Button>
+              </Link>
+            )}
             <Box w="2"></Box>
-            <Link to="/login" as={RouterLink}>
-              <Button
-                bg="black"
-                color="white"
-                _hover={{ bg: "gray.700" }}
-                _active={{ bg: "gray.800" }}
-              >
-                <span>Login</span>
-              </Button>
-            </Link>
+            {history.location.pathname === "/login" ? (
+              <></>
+            ) : (
+              <Link to="/login" as={RouterLink}>
+                <Button
+                  bg="black"
+                  color="white"
+                  _hover={{ bg: "gray.700" }}
+                  _active={{ bg: "gray.800" }}
+                >
+                  <span>Login</span>
+                </Button>
+              </Link>
+            )}
           </>
         )}
         <Box w="2"></Box>

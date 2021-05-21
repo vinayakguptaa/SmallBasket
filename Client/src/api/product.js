@@ -1,9 +1,19 @@
 import axios from "axios";
 
-export const login = async (data) => {
+export const add = async (data, token) => {
   let result;
+  console.log(data);
+  let form = new FormData();
+  form.append("name", data.name);
+  form.append("price", data.price);
+  form.append("image", data.image[0]);
+
   await axios
-    .post(`${process.env.REACT_APP_URL}/user/login`, data)
+    .post(`${process.env.REACT_APP_URL}/product/add`, form, {
+      headers: {
+        authorization: token,
+      },
+    })
     .then((res) => {
       if (res.status === 200) result = res.data;
       else result = 0;

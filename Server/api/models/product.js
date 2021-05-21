@@ -1,12 +1,13 @@
 const mongoose = require("mongoose");
+// const User = require("./user");
 
 const reviewSchema = mongoose.Schema({
   _id: mongoose.Schema.Types.ObjectId,
   stars: { type: Number, default: 0 },
   text: { type: String },
   author: {
-    type: mongoose.Schema.Types.ObjectId, 
-    ref='User',
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
   },
 });
 
@@ -15,7 +16,7 @@ const productSchema = mongoose.Schema({
   name: { type: String },
   image: { type: String },
   price: { type: Number },
-  reviews: { type: [reviewSchema] },
+  reviews: { type: [reviewSchema], default: [] },
 });
 
 module.exports = mongoose.model("Product", productSchema);
