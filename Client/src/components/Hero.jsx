@@ -1,6 +1,7 @@
 import React from "react";
-import { Box, Flex, Heading } from "@chakra-ui/react";
+import { Box, Flex, Heading, useColorMode } from "@chakra-ui/react";
 import hero from "../assets/heroBg.png";
+import heroD from "../assets/heroBgDark.png";
 import hero1 from "../assets/heroImage1.png";
 import hero2 from "../assets/heroImage2.png";
 import hero3 from "../assets/heroImage3.png";
@@ -16,6 +17,13 @@ const styles = {
     marginBottom: "6vh",
     minHeight: "70vh",
   },
+  heroD: {
+    background: `url(${heroD}) no-repeat right 50px`,
+    backgroundSize: "280px",
+    padding: 0,
+    marginBottom: "6vh",
+    minHeight: "70vh",
+  },
   heroImgs: {
     position: "absolute",
     transition: "transform 0.4s ",
@@ -26,9 +34,22 @@ const styles = {
 };
 
 function Hero(props) {
+  const { colorMode } = useColorMode();
+
   return (
-    <Flex sx={styles.hero} direction="row" w="100%">
-      <Box sx={{ position: "relative", width: "35%", padding: 2 }}>
+    <Flex
+      sx={colorMode === "light" ? styles.hero : styles.heroD}
+      direction="row"
+      w="100%"
+      wrap="wrap"
+    >
+      <Box
+        sx={{
+          position: "relative",
+          width: { base: "100%", lg: "40%", xl: "30%" },
+          padding: 2,
+        }}
+      >
         <Flex direction="column" justify="center" h="100%">
           <Heading as="h1" size="4xl" color="secondary">
             BUY
@@ -43,7 +64,12 @@ function Hero(props) {
           </Heading>
         </Flex>
       </Box>
-      <Box sx={{ position: "relative", width: "65%" }}>
+      <Box
+        sx={{
+          position: "relative",
+          width: { base: "0%", lg: "60%", xl: "70%" },
+        }}
+      >
         <div className="heroImgs" style={{ zIndex: 100, top: 20, left: "2%" }}>
           <img
             src={hero1}

@@ -1,24 +1,18 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
-import { UserContext } from "./context/UserContext";
-import Dashboard from "./pages/Dashboard";
 import LandingPage from "./pages/LandingPage";
+import LoginPage from "./pages/LoginPage";
+import SignUpPage from "./pages/SignUpPage";
 
 function Routes() {
-  const { isLoggedIn } = useContext(UserContext);
   return (
     <>
-      {isLoggedIn ? (
-        <Switch>
-          <Route exact path="/" component={Dashboard} />
-          <Route exact path="/*" render={() => <Redirect to="/" />} />
-        </Switch>
-      ) : (
-        <Switch>
-          <Route exact path="/" component={LandingPage} />
-          <Route exact path="/*" render={() => <Redirect to="/" />} />
-        </Switch>
-      )}
+      <Switch>
+        <Route exact path="/" component={LandingPage} />
+        <Route exact path="/login" component={LoginPage} />
+        <Route exact path="/signup" component={SignUpPage} />
+        <Route exact path="/*" render={() => <Redirect to="/" />} />
+      </Switch>
     </>
   );
 }

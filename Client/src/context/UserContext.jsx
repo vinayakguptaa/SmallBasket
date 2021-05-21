@@ -26,8 +26,8 @@ const UserContextProvider = ({ children }) => {
     // const profile = await fetchStudentProfile(token);
     // if (profile) {
     dispatch({ type: "SET_LOGIN_TRUE", payload: token });
-    //   setStudentDetails(profile);
-    // localStorage.setItem("token", token);
+    //   setProfile(profile);
+    localStorage.setItem("token", token);
     // } else {
     //   localStorage.clear();
     // }
@@ -38,7 +38,11 @@ const UserContextProvider = ({ children }) => {
     dispatch({ type: "SET_LOGIN_FALSE" });
   };
 
-  const setStudentDetails = (profile) => {
+  const setAdminTrue = () => {
+    dispatch({ type: "SET_ADMIN_TRUE" });
+  };
+
+  const setProfile = (profile) => {
     dispatch({ type: "SET_STUDENT_PROFILE", payload: profile });
   };
 
@@ -46,7 +50,8 @@ const UserContextProvider = ({ children }) => {
     ...state,
     setLoginTrue,
     setLoginFalse,
-    setStudentDetails,
+    setProfile,
+    setAdminTrue
   };
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
@@ -72,6 +77,11 @@ const userReducer = (state, action) => {
       return {
         ...state,
         studentProfile: action.payload,
+      };
+    case "SET_ADMIN_TRUE":
+      return {
+        ...state,
+        isAdmin: true,
       };
     default:
       return { ...state };

@@ -29,6 +29,9 @@ const theme = extendTheme({
           transform: "scale(1.1)",
         },
       },
+      ".hide": {
+        display: "none",
+      },
     },
   },
 });
