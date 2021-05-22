@@ -69,3 +69,39 @@ export const addReview = async (data, token) => {
     });
   return result;
 };
+
+export const delReview = async (data, token) => {
+  let result;
+  await axios
+    .post(`${process.env.REACT_APP_URL}/product/delRev`, data, {
+      headers: {
+        authorization: token,
+      },
+    })
+    .then((res) => {
+      if (res.status === 200) result = res.data;
+      else result = 0;
+    })
+    .catch((err) => {
+      result = 0;
+    });
+  return result;
+};
+
+export const addCart = async (data, token) => {
+  let result;
+  await axios
+    .post(`${process.env.REACT_APP_URL}/product/addToCart`, data, {
+      headers: {
+        authorization: token,
+      },
+    })
+    .then((res) => {
+      if (res.status === 200) result = res.data;
+      else result = 0;
+    })
+    .catch((err) => {
+      result = 0;
+    });
+  return result;
+};

@@ -17,10 +17,16 @@ import {
   Input,
   ModalFooter,
   Textarea,
+  Flex,
 } from "@chakra-ui/react";
 import React, { useContext, useEffect, useState } from "react";
 import LandingNav from "../components/LandingNav";
-import { addReview, getProduct as getProductAPI } from "../api/product";
+import {
+  addCart,
+  addReview,
+  delReview,
+  getProduct as getProductAPI,
+} from "../api/product";
 import { useHistory, useParams } from "react-router";
 import { UserContext } from "../context/UserContext";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
@@ -55,11 +61,13 @@ function ProductPage() {
       }
       if (result) {
         setItem(result);
+        let found = false;
         for (let i = 0; i < result.reviews.length; i++) {
           if (result.reviews[i].author.email === email) {
-            setReviewed(true);
+            found = true;
           }
         }
+        setReviewed(found);
       }
     });
   };
@@ -75,11 +83,13 @@ function ProductPage() {
       history.push("/login");
       return;
     }
-    toast({
-      title: "Added to Cart!",
-      status: "success",
-      duration: 3000,
-      isClosable: true,
+    addCart({ productId: id }, token).then((res) => {
+      toast({
+        title: "Added to Cart!",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
     });
   };
 
@@ -106,6 +116,18 @@ function ProductPage() {
         setOpen(false);
       }
     );
+  };
+
+  const delRev = () => {
+    delReview({ productId: id }, token).then((res) => {
+      toast({
+        title: "Review Deleted!",
+        status: "info",
+        duration: 3000,
+        isClosable: true,
+      });
+      getData();
+    });
   };
 
   useEffect(() => {
@@ -156,14 +178,23 @@ function ProductPage() {
           </Box>
           <Box h="10px"></Box>
           <Box borderWidth="1px" borderRadius="lg" padding={3}>
-            <Button
-              variant="solid"
-              onClick={() => {
-                setOpen(true);
-              }}
-            >
-              {reviewed === true ? "Edit Review" : "Add a Review"}
-            </Button>
+            <Flex justify="space-between">
+              <Button
+                variant="solid"
+                onClick={() => {
+                  setOpen(true);
+                }}
+              >
+                {reviewed ? "Edit Review" : "Add a Review"}
+              </Button>
+              {reviewed ? (
+                <Button variant="solid" onClick={delRev}>
+                  Delete Review
+                </Button>
+              ) : (
+                <></>
+              )}
+            </Flex>
             {item.reviews ? (
               item.reviews.map((rev) => (
                 <Box

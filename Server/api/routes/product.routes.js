@@ -4,6 +4,7 @@ const Product = require("../models/product");
 const mongoose = require("mongoose");
 const checkUser = require("../middleware/checkUser");
 const { upload } = require("../middleware/s3UploadClient");
+const Cart = require("../models/cart");
 
 router.post("/add", checkUser, upload.single("image"), async (req, res) => {
   const { name, price } = req.body;
@@ -85,9 +86,15 @@ router.post("/addRev", checkUser, async (req, res) => {
                   "reviews.$.text": text,
                 },
               }
-            ).then((result) => {
-              res.status(200).json({});
-            });
+            )
+              .then((result) => {
+                res.status(200).json({});
+              })
+              .catch((e) => {
+                res.status(400).json({
+                  error: e.toString(),
+                });
+              });
           } else {
             Product.updateOne(
               { _id: id },
@@ -102,9 +109,15 @@ router.post("/addRev", checkUser, async (req, res) => {
                   ],
                 },
               }
-            ).then((result) => {
-              res.status(200).json({});
-            });
+            )
+              .then((result) => {
+                res.status(200).json({});
+              })
+              .catch((e) => {
+                res.status(400).json({
+                  error: e.toString(),
+                });
+              });
           }
         })
         .catch((e) => {
@@ -112,6 +125,107 @@ router.post("/addRev", checkUser, async (req, res) => {
             error: e.toString(),
           });
         });
+    })
+    .catch((e) => {
+      res.status(400).json({
+        error: e.toString(),
+      });
+    });
+});
+
+router.post("/delRev", checkUser, (req, res) => {
+  const { productId } = req.body;
+  const { userId } = req.user;
+  Product.findOne({ _id: productId, "reviews.author": userId })
+    .then((product) => {
+      if (product) {
+        Product.updateOne(
+          { _id: productId },
+          {
+            $pull: {
+              reviews: { author: userId },
+            },
+          }
+        )
+          .then((result) => {
+            res.status(200).json({});
+          })
+          .catch((e) => {
+            res.status(400).json({
+              error: e.toString(),
+            });
+          });
+      } else {
+        res.status(400).json({
+          error: "Not Found!",
+        });
+      }
+    })
+    .catch((e) => {
+      res.status(400).json({
+        error: e.toString(),
+      });
+    });
+});
+
+router.post("/addToCart", checkUser, async (req, res) => {
+  const { productId } = req.body;
+  const { userId } = req.user;
+  Cart.find({ userId })
+    .then((cart) => {
+      if (cart.length === 0) {
+        const cart = new Cart({
+          _id: new mongoose.Types.ObjectId(),
+          userId: userId,
+          items: [{ product: productId, quantity: 1 }],
+        });
+        cart
+          .save()
+          .then((c) => {
+            res.status(200).json({});
+          })
+          .catch((e) => {
+            res.status(400).json({
+              error: e.toString(),
+            });
+          });
+      } else {
+        Cart.findOne({ userId, "items.product": productId })
+          .then((product) => {
+            if (product) {
+              Cart.updateOne(
+                { userId, "items.product": productId },
+                { $inc: { "items.$.quantity": 1 } }
+              )
+                .then((c) => {
+                  res.status(200).json({});
+                })
+                .catch((e) => {
+                  res.status(400).json({
+                    error: e.toString(),
+                  });
+                });
+            } else {
+              Cart.updateOne(
+                { userId },
+                { $push: { items: [{ product: productId, quantity: 1 }] } }
+              )
+                .then((c) => {
+                  res.status(200).json({});
+                })
+                .catch((e) => {
+                  res.status(400).json({
+                    error: e.toString(),
+                  });
+                });
+            }
+          })
+          .catch((e) => {
+            res.status(400).json({
+              error: e.toString(),
+            });
+          });
+      }
     })
     .catch((e) => {
       res.status(400).json({
