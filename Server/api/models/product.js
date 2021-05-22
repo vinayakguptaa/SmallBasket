@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 // const User = require("./user");
 
 const reviewSchema = mongoose.Schema({
-  _id: mongoose.Schema.Types.ObjectId,
   stars: { type: Number, default: 0 },
   text: { type: String },
   author: {

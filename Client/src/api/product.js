@@ -24,10 +24,10 @@ export const add = async (data, token) => {
   return result;
 };
 
-export const signup = async (data) => {
+export const getAll = async () => {
   let result;
   await axios
-    .post(`${process.env.REACT_APP_URL}/user/register`, data)
+    .get(`${process.env.REACT_APP_URL}/product/all`)
     .then((res) => {
       if (res.status === 200) result = res.data;
       else result = 0;
@@ -38,10 +38,24 @@ export const signup = async (data) => {
   return result;
 };
 
-export const getProfile = async (token) => {
+export const getProduct = async (id) => {
   let result;
   await axios
-    .get(`${process.env.REACT_APP_URL}/user/getProfile`, {
+    .get(`${process.env.REACT_APP_URL}/product/${id}`)
+    .then((res) => {
+      if (res.status === 200) result = res.data[0];
+      else result = 0;
+    })
+    .catch((err) => {
+      result = 0;
+    });
+  return result;
+};
+
+export const addReview = async (data, token) => {
+  let result;
+  await axios
+    .post(`${process.env.REACT_APP_URL}/product/addRev`, data, {
       headers: {
         authorization: token,
       },

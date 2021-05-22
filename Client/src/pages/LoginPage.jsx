@@ -46,7 +46,7 @@ function LoginPage() {
       if (result && result.token) {
         setLoginTrue(result.token);
         if (result.isAdmin) setAdminTrue();
-        history.push("/");
+        history.goBack();
       }
     });
   };
