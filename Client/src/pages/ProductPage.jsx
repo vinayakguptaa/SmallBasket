@@ -21,8 +21,8 @@ import {
 } from "@chakra-ui/react";
 import React, { useContext, useEffect, useState } from "react";
 import LandingNav from "../components/LandingNav";
+import { addCart } from "../api/cart";
 import {
-  addCart,
   addReview,
   delReview,
   getProduct as getProductAPI,

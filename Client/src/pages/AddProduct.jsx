@@ -19,7 +19,7 @@ import { useHistory } from "react-router";
 
 function AddProduct() {
   const { colorMode } = useColorMode();
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, setValue } = useForm();
 
   const [fileChosen, setFile] = useState("No file Chosen");
   const [imag, setImg] = useState(null);
@@ -131,11 +131,12 @@ function AddProduct() {
                     setFile("No file Chosen");
                     setImg(null);
                   }
+                  setValue("image", e.target.files);
                 }}
                 sx={{ display: "none" }}
               />
               <Button type="submit">
-                <span className="gradient-text">SignUp</span>
+                <span className="gradient-text">Add</span>
               </Button>
             </Flex>
           </form>

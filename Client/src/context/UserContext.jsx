@@ -23,7 +23,7 @@ const UserContextProvider = ({ children }) => {
     } else {
       setLoginFalse();
     }
-    console.log({ user: state });
+    // console.log({ user: state });
     //eslint-disable-next-line
   }, []);
 

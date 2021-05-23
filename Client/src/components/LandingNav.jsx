@@ -7,7 +7,7 @@ import { UserContext } from "../context/UserContext";
 import { ColorModeSwitcher } from "./ColorModeSwitcher";
 
 function LandingNav(props) {
-  const { isLoggedIn, setLoginFalse } = useContext(UserContext);
+  const { isLoggedIn, setLoginFalse, name } = useContext(UserContext);
 
   const history = useHistory();
 
@@ -41,6 +41,7 @@ function LandingNav(props) {
       <Flex>
         {isLoggedIn ? (
           <>
+            {/* <span>Hi {name}!</span> */}
             <Button onClick={setLoginFalse}>
               <span className="gradient-text">Logout</span>
             </Button>

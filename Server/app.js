@@ -7,6 +7,7 @@ require("dotenv").config();
 
 const userRoutes = require("./api/routes/user.routes");
 const productRoutes = require("./api/routes/product.routes");
+const cartRoutes = require("./api/routes/cart.routes");
 
 mongoose
   .connect(process.env.MONGO_URL, {
@@ -38,6 +39,7 @@ app.use((req, res, next) => {
 app.use(cors());
 app.use("/user", userRoutes);
 app.use("/product", productRoutes);
+app.use("/cart", cartRoutes);
 
 app.use((req, res, next) => {
   console.log(req.url);
