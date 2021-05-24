@@ -1,4 +1,12 @@
-import { Box, Grid, useToast, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Grid,
+  Heading,
+  Text,
+  useToast,
+  VStack,
+} from "@chakra-ui/react";
 import React, { useContext, useEffect, useState } from "react";
 import LandingNav from "../components/LandingNav";
 import { getCart } from "../api/cart";
@@ -10,13 +18,10 @@ import ProductCart from "../components/ProductCart";
 function CartPage() {
   const { id } = useParams();
   const toast = useToast();
-
   const { register, handleSubmit } = useForm();
-
   const [items, setItem] = useState([]);
   const [open, setOpen] = useState(false);
   const history = useHistory();
-
   const { isLoggedIn, token, email } = useContext(UserContext);
   const [reviewed, setReviewed] = useState(false);
 
@@ -34,6 +39,9 @@ function CartPage() {
   };
 
   useEffect(() => {
+    if (!isLoggedIn) {
+      history.push("/");
+    }
     getData(token);
     // eslint-disable-next-line
   }, [token]);
@@ -41,35 +49,51 @@ function CartPage() {
   return (
     <VStack spacing={0}>
       <LandingNav />
-      <Grid
-        templateColumns={{
-          base: "repeat(1, 1fr)",
-          sm: "repeat(2, 1fr)",
+      <Box w="100%" maxW="600px" p={[6, 4, 2]} pb="70px">
+        {items.length === 0 ? (
+          <></>
+        ) : (
+          <>
+            {items.map((item) => (
+              <>
+                <ProductCart item={item} />
+              </>
+            ))}
+          </>
+        )}
+      </Box>
+      <Box
+        sx={{
+          position: "fixed",
+          bottom: 0,
+          borderRadius: "8px 8px 0 0",
+          "@media screen and (min-width: 600px)": {
+            position: "relative !important",
+            borderRadius: "lg",
+          },
         }}
-        gap={[3, 4, 5]}
-        padding={"30px 5px"}
-        justifyContent="space-evenly"
-        w="100%"
-        maxW="1200px"
-        minH="90vh"
+        h="60px"
+        bg="blue.300"
+        zIndex="10"
+        width="100%"
+        maxW="600px"
+        d="flex"
+        color="white"
       >
-        <Box>
-          {items.length === 0 ? (
-            <></>
-          ) : (
-            <>
-              {items.map((item) => (
-                <>
-                  <ProductCart item={item.product} />
-                  <ProductCart item={item.product} />
-                  <ProductCart item={item.product} />
-                  <ProductCart item={item.product} />
-                </>
-              ))}
-            </>
-          )}
+        <Box
+          d="flex"
+          justifyContent="center"
+          alignItems="center"
+          w="50%"
+          fontSize="xl"
+          fontWeight="bold"
+        >
+          Total: ₹ 1000
         </Box>
-      </Grid>
+        <Button w="50%" h="100%" variant="ghost">
+          Proceed to Checkout
+        </Button>
+      </Box>
     </VStack>
   );
 }

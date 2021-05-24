@@ -1,13 +1,14 @@
-import { Button } from "@chakra-ui/button";
+import { Button, IconButton } from "@chakra-ui/button";
 import { Box, Flex, Heading, HStack, Link } from "@chakra-ui/layout";
 import React, { useContext } from "react";
+import { FaShoppingCart } from "react-icons/fa";
 import { Link as RouterLink, useHistory } from "react-router-dom";
 import logo from "../assets/logo.svg";
 import { UserContext } from "../context/UserContext";
 import { ColorModeSwitcher } from "./ColorModeSwitcher";
 
 function LandingNav(props) {
-  const { isLoggedIn, setLoginFalse, name } = useContext(UserContext);
+  const { isLoggedIn, setLoginFalse } = useContext(UserContext);
 
   const history = useHistory();
 
@@ -41,7 +42,16 @@ function LandingNav(props) {
       <Flex>
         {isLoggedIn ? (
           <>
-            {/* <span>Hi {name}!</span> */}
+            <Link as={RouterLink} to="/cart">
+              <IconButton
+                size="md"
+                fontSize="lg"
+                variant="ghost"
+                color="current"
+                icon={<FaShoppingCart />}
+              />
+            </Link>
+            <Box w="2"></Box>
             <Button onClick={setLoginFalse}>
               <span className="gradient-text">Logout</span>
             </Button>

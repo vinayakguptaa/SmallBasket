@@ -35,3 +35,21 @@ export const getCart = async (token) => {
     });
   return result;
 };
+
+export const delCart = async (productId, token) => {
+  let result;
+  await axios
+    .delete(`${process.env.REACT_APP_URL}/cart/${productId}`, {
+      headers: {
+        authorization: token,
+      },
+    })
+    .then((res) => {
+      if (res.status === 200) result = res.data;
+      else result = 0;
+    })
+    .catch((err) => {
+      result = 0;
+    });
+  return result;
+};
