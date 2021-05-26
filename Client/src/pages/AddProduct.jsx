@@ -54,11 +54,13 @@ function AddProduct() {
   };
 
   useEffect(() => {
-    if (!isLoggedIn || !isAdmin) {
+    if (!localStorage.getItem("token")) {
+      history.push("/");
+    } else if (!isAdmin) {
       history.push("/");
     }
     // eslint-disable-next-line
-  }, []);
+  }, [isAdmin]);
 
   return (
     <VStack spacing={0}>

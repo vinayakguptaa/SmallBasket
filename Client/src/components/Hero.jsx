@@ -1,5 +1,12 @@
-import React from "react";
-import { Box, Flex, Heading, useColorMode } from "@chakra-ui/react";
+import React, { useContext } from "react";
+import {
+  Box,
+  Flex,
+  Heading,
+  useColorMode,
+  Link,
+  Button,
+} from "@chakra-ui/react";
 import hero from "../assets/heroBg.png";
 import heroD from "../assets/heroBgDark.png";
 import hero1 from "../assets/heroImage1.png";
@@ -8,6 +15,8 @@ import hero3 from "../assets/heroImage3.png";
 import hero4 from "../assets/heroImage4.png";
 import hero5 from "../assets/heroImage5.png";
 import hero6 from "../assets/heroImage6.png";
+import { UserContext } from "../context/UserContext";
+import { Link as RouterLink } from "react-router-dom";
 
 const styles = {
   hero: {
@@ -35,6 +44,7 @@ const styles = {
 
 function Hero(props) {
   const { colorMode } = useColorMode();
+  const { isAdmin } = useContext(UserContext);
 
   return (
     <Flex
@@ -62,6 +72,13 @@ function Hero(props) {
             Get honest reviews on wide range of products, so you always buy the
             best.
           </Heading>
+          {isAdmin ? (
+            <Link as={RouterLink} to="/product" mt="4">
+              <Button>Vendor Page</Button>
+            </Link>
+          ) : (
+            <></>
+          )}
         </Flex>
       </Box>
       <Box

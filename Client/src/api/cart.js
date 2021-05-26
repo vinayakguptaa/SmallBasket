@@ -53,3 +53,21 @@ export const delCart = async (productId, token) => {
     });
   return result;
 };
+
+export const updateCart = async (productId, data, token) => {
+  let result;
+  await axios
+    .patch(`${process.env.REACT_APP_URL}/cart/${productId}`, data, {
+      headers: {
+        authorization: token,
+      },
+    })
+    .then((res) => {
+      if (res.status === 200) result = res.data;
+      else result = 0;
+    })
+    .catch((err) => {
+      result = 0;
+    });
+  return result;
+};

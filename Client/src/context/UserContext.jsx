@@ -6,7 +6,7 @@ export const UserContext = createContext();
 const initialState = {
   isLoggedIn: false,
   token: "",
-  isAdmin: false,
+  isAdmin: true,
   name: "",
   email: "",
   address: "",

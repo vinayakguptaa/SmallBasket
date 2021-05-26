@@ -1,45 +1,42 @@
 import {
   Box,
   Button,
-  Grid,
   Heading,
-  Text,
-  useToast,
+  Icon,
   VStack,
 } from "@chakra-ui/react";
 import React, { useContext, useEffect, useState } from "react";
 import LandingNav from "../components/LandingNav";
 import { getCart } from "../api/cart";
-import { useHistory, useParams } from "react-router";
+import { useHistory } from "react-router";
 import { UserContext } from "../context/UserContext";
-import { useForm } from "react-hook-form";
 import ProductCart from "../components/ProductCart";
+import { FiShoppingCart } from "react-icons/fi";
 
 function CartPage() {
-  const { id } = useParams();
-  const toast = useToast();
-  const { register, handleSubmit } = useForm();
   const [items, setItem] = useState([]);
-  const [open, setOpen] = useState(false);
+  const [total, setTotal] = useState(0);
   const history = useHistory();
-  const { isLoggedIn, token, email } = useContext(UserContext);
-  const [reviewed, setReviewed] = useState(false);
+  const { token } = useContext(UserContext);
 
   const getData = (token) => {
     getCart(token).then((res) => {
       let result = res;
       console.log(result);
       if (result === 0) {
+        setItem([]);
+        setTotal(0);
         return;
       }
       if (result) {
         setItem(result.items);
+        setTotal(result.total);
       }
     });
   };
 
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (!localStorage.getItem("token")) {
       history.push("/");
     }
     getData(token);
@@ -49,51 +46,74 @@ function CartPage() {
   return (
     <VStack spacing={0}>
       <LandingNav />
-      <Box w="100%" maxW="600px" p={[6, 4, 2]} pb="70px">
-        {items.length === 0 ? (
-          <></>
-        ) : (
-          <>
-            {items.map((item) => (
-              <>
-                <ProductCart item={item} />
-              </>
-            ))}
-          </>
-        )}
-      </Box>
-      <Box
-        sx={{
-          position: "fixed",
-          bottom: 0,
-          borderRadius: "8px 8px 0 0",
-          "@media screen and (min-width: 600px)": {
-            position: "relative !important",
-            borderRadius: "lg",
-          },
-        }}
-        h="60px"
-        bg="blue.300"
-        zIndex="10"
-        width="100%"
-        maxW="600px"
-        d="flex"
-        color="white"
-      >
+      {items.length === 0 ? (
         <Box
+          w="100%"
+          h="80vh"
           d="flex"
           justifyContent="center"
           alignItems="center"
-          w="50%"
-          fontSize="xl"
-          fontWeight="bold"
+          flexWrap="wrap"
         >
-          Total: ₹ 1000
+          <Box textAlign="center">
+            <Icon
+              as={FiShoppingCart}
+              boxSize="10em"
+              viewBos="0 0 200 200"
+              color="blue.400"
+              mr="3"
+            />
+            <br />
+            <Heading className="gradient-text">Cart is Empty</Heading>
+          </Box>
         </Box>
-        <Button w="50%" h="100%" variant="ghost">
-          Proceed to Checkout
-        </Button>
-      </Box>
+      ) : (
+        <>
+          <Box w="100%" maxW="600px" p={[4, 3, 2]} pb="70px">
+            {items.length === 0 ? (
+              <></>
+            ) : (
+              <>
+                {items.map((item) => (
+                  <>
+                    <ProductCart item={item} getData={getData} />
+                  </>
+                ))}
+              </>
+            )}
+          </Box>
+          <Box
+            sx={{
+              position: "fixed",
+              bottom: 0,
+              borderRadius: "8px 8px 0 0",
+              "@media screen and (min-width: 600px)": {
+                position: "relative !important",
+                borderRadius: "lg",
+                marginTop: "10px !important",
+              },
+            }}
+            h="60px"
+            bg="blue.300"
+            zIndex="10"
+            width="100%"
+            maxW="600px"
+            d="flex"
+            color="white"
+          >
+            <Button
+              w="100%"
+              h="100%"
+              colorScheme="blue.300"
+              d="flex"
+              justifyContent="space-around"
+            >
+              <span>Total: ₹ {total}</span>
+              <span>Proceed to Checkout</span>
+            </Button>
+          </Box>
+        </>
+      )}
     </VStack>
   );
 }

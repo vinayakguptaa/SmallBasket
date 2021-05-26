@@ -16,15 +16,24 @@ import {
 import { Link as RouterLink } from "react-router-dom";
 import { AiFillDelete } from "react-icons/ai";
 import { UserContext } from "../context/UserContext";
-import { delCart } from "../api/cart";
+import { delCart, updateCart } from "../api/cart";
 
-function ProductCart({ item }) {
+function ProductCart({ item, getData }) {
   const [qty, setQty] = useState(item.quantity);
   const { token } = useContext(UserContext);
 
   const delItem = () => {
     delCart(item.product._id, token).then((res) => {
       if (res !== 0) {
+        getData(token);
+      }
+    });
+  };
+
+  const updateItem = () => {
+    updateCart(item.product._id, { quantity: qty }, token).then((res) => {
+      if (res !== 0) {
+        getData(token);
       }
     });
   };
@@ -75,7 +84,12 @@ function ProductCart({ item }) {
               sx={{ padding: "0 6rem" }}
             />
             <InputRightElement width="5.5rem">
-              <Button h="1.75rem" size="sm" sx={{ paddingRight: "0.5rem" }}>
+              <Button
+                h="1.75rem"
+                size="sm"
+                sx={{ paddingRight: "0.5rem" }}
+                onClick={updateItem}
+              >
                 Update
               </Button>
             </InputRightElement>
@@ -89,7 +103,7 @@ function ProductCart({ item }) {
             color="white"
             mt="3"
             ml="3"
-            onClick={() => {}}
+            onClick={delItem}
             icon={<AiFillDelete />}
           />
         </Flex>

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Grid, Heading, Link } from "@chakra-ui/react";
 import { getAll } from "../api/product";
 import ProductCard from "./ProductCard";
-import { Link as RouterLink } from "react-router-dom";
 
 function ShopSection(props) {
   const [trending, setTrending] = useState([]);
@@ -17,7 +16,6 @@ function ShopSection(props) {
   return (
     <>
       <Heading>Trending Products</Heading>
-      <Link as={RouterLink} to="/product">Product Page</Link>
       <Grid
         templateColumns={{
           base: "repeat(auto-fill, 320px)",
