@@ -6,7 +6,7 @@ export const UserContext = createContext();
 const initialState = {
   isLoggedIn: false,
   token: "",
-  isAdmin: true,
+  isAdmin: false,
   name: "",
   email: "",
   address: "",
@@ -77,6 +77,10 @@ const userReducer = (state, action) => {
         ...state,
         isLoggedIn: false,
         token: "",
+        isAdmin:false,
+        name: "",
+        email: "",
+        address: "",
       };
     case "SET_STUDENT_PROFILE":
       return {

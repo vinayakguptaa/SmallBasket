@@ -1,5 +1,6 @@
 import React from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
+import TwoFA from "./pages/2FA";
 import AddProduct from "./pages/AddProduct";
 import CartPage from "./pages/CartPage";
 import LandingPage from "./pages/LandingPage";
@@ -13,6 +14,7 @@ function Routes() {
       <Switch>
         <Route exact path="/" component={LandingPage} />
         <Route exact path="/login" component={LoginPage} />
+        <Route exact path="/2fa" component={TwoFA} />
         <Route exact path="/signup" component={SignUpPage} />
         <Route exact path="/product" component={AddProduct} />
         <Route exact path="/product/:id" component={ProductPage} />

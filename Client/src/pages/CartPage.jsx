@@ -1,13 +1,8 @@
-import {
-  Box,
-  Button,
-  Heading,
-  Icon,
-  VStack,
-} from "@chakra-ui/react";
+import { Box, Button, Heading, Icon, VStack } from "@chakra-ui/react";
 import React, { useContext, useEffect, useState } from "react";
 import LandingNav from "../components/LandingNav";
 import { getCart } from "../api/cart";
+import { placeOrder } from "../api/order";
 import { useHistory } from "react-router";
 import { UserContext } from "../context/UserContext";
 import ProductCart from "../components/ProductCart";
@@ -19,7 +14,7 @@ function CartPage() {
   const history = useHistory();
   const { token } = useContext(UserContext);
 
-  const getData = (token) => {
+  const getData = () => {
     getCart(token).then((res) => {
       let result = res;
       console.log(result);
@@ -35,11 +30,17 @@ function CartPage() {
     });
   };
 
+  const order = () => {
+    placeOrder(token).then((res) => {
+      getData();
+    })
+  }
+
   useEffect(() => {
     if (!localStorage.getItem("token")) {
       history.push("/");
     }
-    getData(token);
+    getData();
     // eslint-disable-next-line
   }, [token]);
 
@@ -107,6 +108,7 @@ function CartPage() {
               colorScheme="blue.300"
               d="flex"
               justifyContent="space-around"
+              onClick={order}
             >
               <span>Total: ₹ {total}</span>
               <span>Proceed to Checkout</span>

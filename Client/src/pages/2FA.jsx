@@ -15,39 +15,24 @@ import { useForm } from "react-hook-form";
 import React, { useContext, useEffect, useState } from "react";
 import LandingNav from "../components/LandingNav";
 import logo from "../assets/logo.svg";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+// import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { login as loginAPI } from "../api/user";
 import { UserContext } from "../context/UserContext";
 import { useHistory } from "react-router";
+import { getAll } from "../api/product";
 
-function LoginPage() {
+function TwoFA() {
   const { colorMode } = useColorMode();
   const { register, handleSubmit } = useForm();
   const toast = useToast();
 
-  const [show, setShow] = useState(false);
+  // const [show, setShow] = useState(false);
   const history = useHistory();
   const { setLoginTrue, setAdminTrue, isLoggedIn } = useContext(UserContext);
 
   const login = (data) => {
-    loginAPI(data).then((res) => {
-      let result = res;
-      console.log(result);
-      if (result === 0) {
-        toast({
-          title: "There was an error!",
-          description: "Please check your password and try again",
-          status: "error",
-          duration: 3000,
-          isClosable: true,
-        });
-        return;
-      }
-      if (result && result.token) {
-        localStorage.setItem("token", result.token);
-        history.push("/2fa");
-      }
-    });
+    setLoginTrue(localStorage.getItem("token"));
+    history.go(-2);
   };
 
   useEffect(() => {
@@ -74,6 +59,7 @@ function LoginPage() {
         >
           <img src={logo} width="70" alt="Small Basket" />
           <Heading className="gradient-text">Login</Heading>
+          <Heading size="sm" className="gradient-text">OTP sent to your email</Heading>
           <form onSubmit={handleSubmit(login)}>
             <Flex
               justify="space-evenly"
@@ -83,29 +69,10 @@ function LoginPage() {
             >
               <Input
                 variant="filled"
-                placeholder="Email"
-                type="email"
-                {...register("email", { required: true })}
+                placeholder="OTP"
+                type="number"
+                {...register("otp", { required: true })}
               />
-              <InputGroup>
-                <Input
-                  variant="filled"
-                  placeholder="Password"
-                  type={show ? "text" : "password"}
-                  {...register("password", { required: true })}
-                />
-                <InputRightElement width="4.5rem">
-                  <IconButton
-                    size="sm"
-                    fontSize="sm"
-                    variant="ghost"
-                    onClick={() => {
-                      setShow(!show);
-                    }}
-                    icon={show ? <FaEyeSlash /> : <FaEye />}
-                  />
-                </InputRightElement>
-              </InputGroup>
               <Button type="submit">
                 <span className="gradient-text">Login</span>
               </Button>
@@ -117,4 +84,4 @@ function LoginPage() {
   );
 }
 
-export default LoginPage;
+export default TwoFA;
