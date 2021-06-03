@@ -5,6 +5,7 @@ import AddProduct from "./pages/AddProduct";
 import CartPage from "./pages/CartPage";
 import LandingPage from "./pages/LandingPage";
 import LoginPage from "./pages/LoginPage";
+import OrderPage from "./pages/OrdersPage";
 import ProductPage from "./pages/ProductPage";
 import SignUpPage from "./pages/SignUpPage";
 
@@ -19,6 +20,7 @@ function Routes() {
         <Route exact path="/product" component={AddProduct} />
         <Route exact path="/product/:id" component={ProductPage} />
         <Route exact path="/cart" component={CartPage} />
+        <Route exact path="/orders" component={OrderPage} />
         <Route exact path="/*" render={() => <Redirect to="/" />} />
       </Switch>
     </>

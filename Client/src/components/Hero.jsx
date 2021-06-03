@@ -73,7 +73,12 @@ function Hero(props) {
             best.
           </Heading>
           {isAdmin ? (
-            <Link as={RouterLink} to="/product" mt="4">
+            <Link
+              as={RouterLink}
+              to="/product"
+              mt="4"
+              sx={{ width: "fit-content" }}
+            >
               <Button>Vendor Page</Button>
             </Link>
           ) : (

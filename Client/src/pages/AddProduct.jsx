@@ -26,7 +26,7 @@ function AddProduct() {
   const toast = useToast();
 
   const history = useHistory();
-  const { isLoggedIn, token, isAdmin } = useContext(UserContext);
+  const { token, isAdmin } = useContext(UserContext);
 
   const signup = (data) => {
     addAPI(data, token).then((res) => {

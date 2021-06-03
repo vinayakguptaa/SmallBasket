@@ -1,10 +1,14 @@
 import { extendTheme } from "@chakra-ui/react";
 const theme = extendTheme({
+  initialColorMode: "dark",
   components: {
     Link: {
       baseStyle: {
         "&:hover": {
           textDecoration: "none",
+        },
+        "&:focus": {
+          boxShadow: "none",
         },
       },
     },

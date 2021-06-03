@@ -3,32 +3,24 @@ import {
   Center,
   Flex,
   Heading,
-  IconButton,
   Input,
-  InputGroup,
-  InputRightElement,
   useColorMode,
   VStack,
-  useToast,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import LandingNav from "../components/LandingNav";
 import logo from "../assets/logo.svg";
-// import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { login as loginAPI } from "../api/user";
 import { UserContext } from "../context/UserContext";
 import { useHistory } from "react-router";
-import { getAll } from "../api/product";
 
 function TwoFA() {
   const { colorMode } = useColorMode();
   const { register, handleSubmit } = useForm();
-  const toast = useToast();
 
   // const [show, setShow] = useState(false);
   const history = useHistory();
-  const { setLoginTrue, setAdminTrue, isLoggedIn } = useContext(UserContext);
+  const { setLoginTrue, isLoggedIn } = useContext(UserContext);
 
   const login = (data) => {
     setLoginTrue(localStorage.getItem("token"));

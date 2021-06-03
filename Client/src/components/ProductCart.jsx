@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   AspectRatio,
   Box,
@@ -41,8 +41,10 @@ function ProductCart({ item, getData }) {
   return (
     <Box
       w="100%"
-      borderWidth="1px"
+      borderWidth="2px"
       borderRadius="lg"
+      boxShadow="lg"
+      bg="whiteAlpha.100"
       d="flex"
       flexWrap="wrap"
       overflow="hidden"

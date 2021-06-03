@@ -1,7 +1,7 @@
 import { Button, IconButton } from "@chakra-ui/button";
 import { Box, Flex, Heading, HStack, Link } from "@chakra-ui/layout";
 import React, { useContext } from "react";
-import { FaShoppingCart } from "react-icons/fa";
+import { FaShoppingCart, FaShoppingBag } from "react-icons/fa";
 import { Link as RouterLink, useHistory } from "react-router-dom";
 import logo from "../assets/logo.svg";
 import { UserContext } from "../context/UserContext";
@@ -49,6 +49,15 @@ function LandingNav(props) {
                 variant="ghost"
                 color="current"
                 icon={<FaShoppingCart />}
+              />
+            </Link>
+            <Link as={RouterLink} to="/orders">
+              <IconButton
+                size="md"
+                fontSize="lg"
+                variant="ghost"
+                color="current"
+                icon={<FaShoppingBag />}
               />
             </Link>
             <Box w="2"></Box>

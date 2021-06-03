@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Grid, Heading, Link } from "@chakra-ui/react";
+import { Grid, Heading } from "@chakra-ui/react";
 import { getAll } from "../api/product";
 import ProductCard from "./ProductCard";
 

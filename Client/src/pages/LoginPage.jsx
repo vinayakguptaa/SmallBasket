@@ -27,7 +27,7 @@ function LoginPage() {
 
   const [show, setShow] = useState(false);
   const history = useHistory();
-  const { setLoginTrue, setAdminTrue, isLoggedIn } = useContext(UserContext);
+  const { isLoggedIn } = useContext(UserContext);
 
   const login = (data) => {
     loginAPI(data).then((res) => {

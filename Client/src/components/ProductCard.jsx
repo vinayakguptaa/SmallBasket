@@ -2,23 +2,30 @@ import React from "react";
 import { AspectRatio, Box, Flex, Image, Link } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
 
-const styles = {
-  pro: {
-    "&:hover": {
-      transform: "scale(1.01)",
-    },
-  },
-};
-
 function ProductCard({ item }) {
   return (
-    <Link to={`/product/${item._id}`} as={RouterLink}>
+    <Link
+      to={`/product/${item._id}`}
+      as={RouterLink}
+      sx={{
+        borderRadius: "lg",
+        "&:focus": {
+          transform: "scale(1.01)",
+          boxShadow:"lg"
+        },
+        "&:hover": {
+          transform: "scale(1.01)",
+          textDecoration: "none"
+        },
+      }}
+    >
       <Box
         maxW="sm"
-        borderWidth="1px"
+        borderWidth="0px"
         borderRadius="lg"
         overflow="hidden"
-        sx={styles.pro}
+        boxShadow="sm"
+        bg="whiteAlpha.50"
       >
         <AspectRatio w="100%" ratio={4 / 3}>
           <Image src={item.image} alt={item.name} objectFit="cover" />
