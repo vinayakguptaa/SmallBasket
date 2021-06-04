@@ -12,6 +12,7 @@ import {
   InputLeftElement,
   InputRightElement,
   Link,
+  useColorMode,
 } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
 import { AiFillDelete } from "react-icons/ai";
@@ -21,6 +22,7 @@ import { delCart, updateCart } from "../api/cart";
 function ProductCart({ item, getData }) {
   const [qty, setQty] = useState(item.quantity);
   const { token } = useContext(UserContext);
+  const { colorMode } = useColorMode();
 
   const delItem = () => {
     delCart(item.product._id, token).then((res) => {
@@ -44,7 +46,7 @@ function ProductCart({ item, getData }) {
       borderWidth="2px"
       borderRadius="lg"
       boxShadow="lg"
-      bg="whiteAlpha.100"
+      bg={colorMode === "light" ? "gray.100" : "gray.700"}
       d="flex"
       flexWrap="wrap"
       overflow="hidden"

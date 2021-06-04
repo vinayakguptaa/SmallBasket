@@ -12,16 +12,18 @@ router.post("/", checkUser, async (req, res) => {
       if (!cart) {
         res.status(400).json({ message: "Cart not found!" });
       } else {
-        const order = new Order({
-          _id: new mongoose.Types.ObjectId(),
-          user: cart.userId,
-          items: cart.items,
-          status: "Order Successful",
-        });
-        order.save().then(() => {
-          cart.remove();
-          res.status(200).json({});
-        });
+        for (i = 0; i < cart.items.length; i++) {
+          const order = new Order({
+            _id: new mongoose.Types.ObjectId(),
+            user: cart.userId,
+            product: cart.items[i].product,
+            quantity: cart.items[i].quantity,
+            status: 0,
+          });
+          order.save();
+        }
+        cart.remove();
+        res.status(200).json({});
       }
     })
     .catch((e) => {
@@ -34,6 +36,7 @@ router.post("/", checkUser, async (req, res) => {
 router.get("/", checkUser, async (req, res) => {
   const { userId } = req.user;
   Order.find({ user: userId })
+    .populate("product", "name image")
     .then((orders) => {
       if (orders.length === 0) {
         res.status(400).json({ message: "No orders!" });
