@@ -75,7 +75,7 @@ function Hero(props) {
           {isAdmin ? (
             <Link
               as={RouterLink}
-              to="/product"
+              to="/admin"
               mt="4"
               sx={{ width: "fit-content" }}
             >

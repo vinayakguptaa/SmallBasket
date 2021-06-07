@@ -1,19 +1,17 @@
-import { Box, Heading, Icon, VStack } from "@chakra-ui/react";
+import Icon from "@chakra-ui/icon";
+import { Box, Center, Heading } from "@chakra-ui/layout";
 import React, { useContext, useEffect, useState } from "react";
-import LandingNav from "../components/LandingNav";
-import { getAll } from "../api/order";
-import { useHistory } from "react-router";
-import { UserContext } from "../context/UserContext";
-import OrderCard from "../components/OrderCard";
 import { FiShoppingBag } from "react-icons/fi";
+import { getPending } from "../api/order";
+import { UserContext } from "../context/UserContext";
+import OrderCardAdmin from "../components/OrderCardAdmin";
 
-function OrderPage() {
-  const [items, setItem] = useState([]);
-  const history = useHistory();
+function PendingOrders(props) {
   const { token } = useContext(UserContext);
+  const [items, setItem] = useState([]);
 
   const getData = () => {
-    getAll(token).then((res) => {
+    getPending(token).then((res) => {
       let result = res;
       console.log(result);
       if (result === 0) {
@@ -27,16 +25,12 @@ function OrderPage() {
   };
 
   useEffect(() => {
-    if (!localStorage.getItem("token")) {
-      history.push("/");
-    }
     getData();
     // eslint-disable-next-line
-  }, [token]);
+  }, []);
 
   return (
-    <VStack spacing={0}>
-      <LandingNav />
+    <Center w="100%" minH="80vh">
       {items.length === 0 ? (
         <Box
           w="100%"
@@ -54,7 +48,7 @@ function OrderPage() {
               color="blue.400"
             />
             <br />
-            <Heading className="gradient-text">No Orders</Heading>
+            <Heading className="gradient-text">No Pending Orders</Heading>
           </Box>
         </Box>
       ) : (
@@ -63,18 +57,15 @@ function OrderPage() {
             <></>
           ) : (
             <>
-              <Heading textAlign="center">Order History</Heading>
               {items.map((item) => (
-                <>
-                  <OrderCard item={item} getData={getData} />
-                </>
+                <OrderCardAdmin item={item} key={item._id} getData={getData} />
               ))}
             </>
           )}
         </Box>
       )}
-    </VStack>
+    </Center>
   );
 }
 
-export default OrderPage;
+export default PendingOrders;

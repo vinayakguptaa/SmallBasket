@@ -51,62 +51,39 @@ router.get("/", checkUser, async (req, res) => {
     });
 });
 
-// router.delete("/:productId", checkUser, async (req, res) => {
-//   const { productId } = req.params;
-//   const { userId } = req.user;
-//   Cart.find({ userId })
-//     .then((cart) => {
-//       if (cart.length === 0) {
-//         return res.status(400).json({ message: "Not Found!" });
-//       } else {
-//         if (cart[0].items.length === 1) {
-//           Cart.updateOne(
-//             { userId },
-//             { $pull: { items: { product: productId } } }
-//           ).then((r) => {
-//             cart[0].remove();
-//             return res.status(200).json({});
-//           });
-//         } else {
-//           Cart.updateOne(
-//             { userId },
-//             { $pull: { items: { product: productId } } }
-//           ).then((r) => {
-//             return res.status(200).json({});
-//           });
-//         }
-//       }
-//     })
-//     .catch((e) => {
-//       res.status(400).json({
-//         error: e.toString(),
-//       });
-//     });
-// });
+router.get("/pending", checkUser, async (req, res) => {
+  if (!req.user.isAdmin) {
+    return res.status(400).json({
+      message: "You are not an admin",
+    });
+  }
+  Order.find({ status: { $in: [0, 1] } })
+    .populate("product", "name image")
+    .populate("user", "name email address")
+    .then((orders) => {
+      if (orders.length === 0) {
+        res.status(400).json({ message: "No orders!" });
+      } else {
+        res.status(200).json(orders);
+      }
+    })
+    .catch((e) => {
+      res.status(400).json({
+        error: e.toString(),
+      });
+    });
+});
 
-// router.patch("/:productId", checkUser, async (req, res) => {
-//   const { productId } = req.params;
-//   const { quantity } = req.body;
-//   const { userId } = req.user;
-//   Cart.find({ userId })
-//     .then((cart) => {
-//       if (cart.length === 0) {
-//         return res.status(400).json({ message: "Not Found!" });
-//       } else {
-//         Cart.updateOne(
-//           { userId, "items.product": productId },
-//           { $set: { "items.$.quantity": quantity } }
-//         ).then((r) => {
-//           console.log(r);
-//           return res.status(200).json({});
-//         });
-//       }
-//     })
-//     .catch((e) => {
-//       res.status(400).json({
-//         error: e.toString(),
-//       });
-//     });
-// });
+router.patch("/status/:id", checkUser, async (req, res) => {
+  Order.updateOne({ _id: req.params.id }, req.body)
+    .then(() => {
+      res.status(200).json({});
+    })
+    .catch((e) => {
+      res.status(400).json({
+        error: e.toString(),
+      });
+    });
+});
 
 module.exports = router;

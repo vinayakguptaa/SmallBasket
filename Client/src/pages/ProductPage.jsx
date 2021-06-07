@@ -14,10 +14,10 @@ import {
   ModalHeader,
   ModalBody,
   FormControl,
-  Input,
   ModalFooter,
   Textarea,
   Flex,
+  Select,
 } from "@chakra-ui/react";
 import React, { useContext, useEffect, useState } from "react";
 import LandingNav from "../components/LandingNav";
@@ -204,11 +204,7 @@ function ProductPage() {
                   padding={3}
                 >
                   <Text fontSize={16} fontWeight="bold">
-                    {rev.author.name}(
-                    <Text fontSize={14} display="inline">
-                      {rev.author.email}
-                    </Text>
-                    )
+                    {rev.author.name}
                   </Text>
                   <Box d="flex" mt="-1" alignItems="center">
                     {Array(5)
@@ -247,7 +243,13 @@ function ProductPage() {
           <ModalHeader>Add/Edit Review</ModalHeader>
           <ModalBody pb={6}>
             <FormControl>
-              <Input placeholder="Star Rating" {...register("stars")} />
+              <Select placeholder="Star Rating" {...register("stars")} required>
+                <option value="1">One Star</option>
+                <option value="2">Two Stars</option>
+                <option value="3">Three Stars</option>
+                <option value="4">Four Stars</option>
+                <option value="5">Five Stars</option>
+              </Select>
             </FormControl>
 
             <FormControl mt={4}>
